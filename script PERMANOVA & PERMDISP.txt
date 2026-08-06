@@ -1,0 +1,88 @@
+
+#### PERMANOVA & PERMDISP ##########
+
+
+library(vegan)
+library (sm)
+library(dplyr)
+library(viridis)
+library(tidyr)
+library(forcats)
+library(hrbrthemes)
+library(colorspace)
+library(RColorBrewer)
+
+#Permanova ITA
+
+ambiental <- amb 
+View(ambiental)
+fatores <- fator
+View (fatores)
+
+
+####### Permanova#######
+
+#Transforma?ao## log neperiano
+
+x<-ambiental
+
+ITA <-log(x+1)
+View(ITA)
+
+#PERMANOVA
+
+#TESTE GLOBAL
+adonis2(ITA~Sazonal+Espacial, data = fatores, by=NULL)
+
+#Teste entre os três fatores
+adonis2(ITA~Sazonal*Espacial, data = fatores)
+
+adonis2(
+  ITA ~ Sazonal * Espacial,
+  data = fatores,
+    permutations = 999,
+  method = "euclidean",
+  by = "terms"
+)
+
+
+
+
+#PERMDISP#
+
+#sazonal
+
+diss<-vegdist(ITA,"euclidian")
+(perm<-betadisper(diss,group = fatores$Sazonal))
+anova(perm)#h? diferen?a na dispers?o dos grupos
+
+TukeyHSD(perm)
+
+
+#PLOT PERMDISP C/ ELIPSE
+plot(perm, hull = FALSE, ellipse = TRUE, family= "sans", font= 1, lwd= 1.6, cex= 2, pch = c(15, 16, 17,15,16),
+     col = c ("#e6626f", "#e7d84b"))
+
+
+
+#BOXPLOTS DISTANCE TO CENTROID
+
+boxplot(perm, col = c("#e6626f", "#e7d84b")) #S/ CINTURA
+
+
+
+#ESPACIAL
+
+diss<-vegdist(ITA,"euclidian")
+(perm<-betadisper(diss,group = fatores$Espacial))
+anova(perm)#h? diferen?a na dispers?o dos grupos
+
+TukeyHSD(perm)
+
+#PLOT PERMDISP C/ ELIPSE
+plot(perm, hull = FALSE, ellipse = TRUE, family= "sans", font= 1, lwd= 2, cex= 2, pch = c(15, 16, 17,15,16),
+     col = c ("#349e97", "#ced0ba", "#e6626f", "#f8f5c1", "#e7d84b"))
+
+#BOXPLOTS DISTANCE TO CENTROID
+
+boxplot(perm, col = c("#349e97", "#ced0ba", "#e6626f", "#f8f5c1", "#e7d84b")) #S/ CINTURA
