@@ -1,0 +1,88 @@
+
+#IndVal
+
+library(vegan)
+library(lattice)
+library(labdsv)
+library(mgcv)
+library(nlme)
+library(stats)
+
+#Dados
+esp<-ABUNDANCIA
+View(esp)
+
+
+grupos<-FATORINDVAL
+View(grupos)
+
+#excluir esp?cies que n?o ocorrem em alguma amostra
+
+esp[ , !apply(esp==0,2,all)]
+
+
+#SAZONAL
+
+(iva<- indval(esp,grupos$Sazonal))
+
+gr<- iva$maxcls[iva$pval <= 0.05]
+iv<- iva$indcls[iva$pval<= 0.05]
+pv<- iva$pval[iva$pval<= 0.05]
+
+fr<- apply(esp > 0,2, sum)[iva$pval <= 0.05]
+
+fidg<- data.frame(grupo=gr, indval=iv, valorp=pv, freq=fr)
+
+fidg.sazonal<- fidg[order(fidg$grupo, -fidg$indval),]
+fidg.sazonal
+
+
+#Exportar resultados
+
+write.table(fidg.sazonal, "IndvalSazonalok.csv")
+
+
+
+
+#espacial
+
+(iva<- indval(esp,grupos$Pontos.1))
+
+gr<- iva$maxcls[iva$pval <= 0.05]
+iv<- iva$indcls[iva$pval<= 0.05]
+pv<- iva$pval[iva$pval<= 0.05]
+
+fr<- apply(esp > 0,2, sum)[iva$pval <= 0.05]
+
+fidg<- data.frame(grupo=gr, indval=iv, valorp=pv, freq=fr)
+
+fidg.espacial<- fidg[order(fidg$grupo, -fidg$indval),]
+fidg.espacial
+
+
+#Exportar resultados
+
+write.table(fidg.sazonal, "IndvalSazonalok.csv")
+
+
+
+
+#Indicspecies
+
+#INDICSPECIES
+
+library(indicspecies)
+library(permute)
+
+(indc<-indicspecies::multipatt(esp,grupos$Sazonal,
+                               control = how(nperm=999)))
+summary(indc, indvalcomp = TRUE)
+
+
+(indc<-indicspecies::multipatt(esp,grupos$Sazonal,
+                               control = how(nperm=999)))
+summary(indc, indvalcomp = TRUE)
+
+(indc<-indicspecies::multipatt(esp,grupos$Mare,
+                               control = how(nperm=999)))
+summary(indc, indvalcomp = TRUE)
