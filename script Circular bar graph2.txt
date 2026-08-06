@@ -1,0 +1,198 @@
+
+
+
+library(tidyverse)
+library(ggplot2)
+library(readxl)
+
+#==============================
+
+# 1. IMPORTAR DADOS
+
+#==============================
+
+dados <- BARRA_PONTOS1
+
+colnames(dados)[1] <- "Species"
+
+#==============================
+
+# 2. TRANSFORMAR PARA FORMATO LONGO
+
+#==============================
+
+dados_long <- dados %>%
+  pivot_longer(
+    cols = starts_with("P"),
+    names_to = "Point",
+    values_to = "Abundance"
+  ) %>%
+  filter(Abundance > 0)
+
+#==============================
+
+# 3. ABREVIAR NOMES DAS ESPÉCIES
+
+#==============================
+
+dados_long <- dados_long %>%
+  mutate(
+    Label = Species
+  )
+
+#==============================
+
+# 4. ESPAÇOS ENTRE OS PONTOS
+
+#==============================
+
+empty_bar <- 4
+
+vazios <- data.frame(
+  Species = NA,
+  Label = NA,
+  Point = rep(unique(dados_long$Point),
+              each = empty_bar),
+  Abundance = NA
+)
+
+dados_plot <- bind_rows(dados_long, vazios)
+
+dados_plot <- dados_plot %>%
+  arrange(Point, desc(Abundance))
+
+dados_plot$id <- seq_len(nrow(dados_plot))
+
+#==============================
+
+# 5. RÓTULOS
+
+#==============================
+
+n <- nrow(dados_plot)
+
+label_data <- dados_plot %>%
+  filter(!is.na(Label)) %>%
+  mutate(
+    angle = 90 - 360*(id-0.5)/n,
+    hjust = ifelse(angle < -90, 1, 0),
+    angle = ifelse(angle < -90,
+                   angle + 180,
+                   angle)
+  )
+
+#==============================
+
+# 6. LIMITES DOS GRUPOS
+
+#==============================
+
+base <- dados_plot %>%
+  group_by(Point) %>%
+  summarise(
+    start = min(id),
+    end = max(id) - empty_bar,
+    .groups = "drop"
+  )
+
+base$title <- (base$start + base$end)/2
+
+#==============================
+
+# 7. LINHAS-GUIA
+
+#==============================
+
+grid <- label_data
+
+#==============================
+
+# 8. GRÁFICO
+
+#==============================
+
+ggplot(
+  dados_plot,
+  aes(
+    x = factor(id),
+    y = Abundance,
+    fill = Point
+  )
+) +
+  
+  geom_col(
+    width = .95,
+    color = "white",
+    linewidth = .25
+  ) +
+  
+  geom_segment(
+    data = grid,
+    aes(
+      x = id,
+      xend = id,
+      y = Abundance,
+      yend = Abundance + 4
+    ),
+    inherit.aes = FALSE,
+    linewidth = .25
+  ) +
+  
+  geom_text(
+    data = label_data,
+    aes(
+      x = id,
+      y = Abundance + 6,
+      label = Label,
+      angle = angle,
+      hjust = hjust
+    ),
+    inherit.aes = FALSE,
+    size = 3,
+    fontface = "italic"
+  ) +
+  
+  geom_text(
+    data = base,
+    aes(
+      x = title,
+      y = -12,
+      label = Point
+    ),
+    inherit.aes = FALSE,
+    fontface = "bold",
+    size = 5
+  ) +
+  
+  coord_polar() +
+  
+  ylim(
+    -18,
+    max(dados_plot$Abundance,
+        na.rm = TRUE) + 12
+  ) +
+  
+  scale_fill_manual(
+    values = c(
+      P1 = "#1B9E77",
+      P2 = "#7570B3",
+      P3 = "#E7298A",
+      P4 = "#66A61E"
+    )
+  ) +
+  
+  labs(
+    fill = "Sampling Point"
+  ) +
+  
+  theme_void(base_size = 13) +
+  
+  theme(
+    legend.position = "top",
+    
+    legend.title =
+      element_text(face = "bold"),
+    
+    plot.margin =
+      margin(20,20,20,20)
+  )
