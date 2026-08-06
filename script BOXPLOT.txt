@@ -1,0 +1,369 @@
+
+
+#Box plot ITAPECURU river 
+
+
+dados<- RAINY
+View(dados)
+
+fator<- FACTOR
+View(fator)
+
+
+#Box de Pontos
+install.packages("RColorBrewer")
+install.packages("ggplot2")
+library(RColorBrewer)
+library(ggplot2)
+
+
+#RAINY PERIOD 
+
+
+#Salinity
+
+boxplot(dados$SAL~fator$pontos,
+        ylim = c(0,20),
+        col = c("turquoise", "turquoise1",  "turquoise2", "turquoise3", "turquoise4"),
+        main="",
+        xlab="",
+        ylab="Salinity")
+
+#Temperature
+boxplot(dados$TEMP~fator$pontos,
+        ylim = c(27,32),
+        col = c("turquoise", "turquoise1",  "turquoise2", "turquoise3", "turquoise4"),
+        main="",
+        xlab="",
+        ylab="Temperature")
+
+#Dissolved oxygen
+boxplot(dados$OD~fator$pontos,
+        ylim = c(0,8),
+        col = c("turquoise", "turquoise1",  "turquoise2", "turquoise3", "turquoise4"),
+        main="",
+        xlab="",
+        ylab="Dissolved oxygen")
+
+#DO%
+boxplot(dados$SAT.OD~fator$pontos,
+        ylim = c(0,100),
+        col = c("turquoise", "turquoise1",  "turquoise2", "turquoise3", "turquoise4"),
+        main="",
+        xlab="",
+        ylab="OD%")
+
+
+#Water transparency
+boxplot(dados$SECCHI~fator$pontos,
+        ylim = c(10,100),
+        col = c("turquoise", "turquoise1",  "turquoise2", "turquoise3", "turquoise4"),
+        main="",
+        xlab="",
+        ylab="Transparência")
+
+
+#TDS
+boxplot(dados$TDS~fator$pontos,
+        ylim = c(0,20000),
+        col = c("turquoise", "turquoise1",  "turquoise2", "turquoise3", "turquoise4"),
+        main="",
+        xlab="",
+        ylab="TDS")
+
+#Electrical Conductivity
+boxplot(dados$Condutividade~fator$pontos,
+        ylim = c(),
+        col = c("turquoise", "turquoise1",  "turquoise2", "turquoise3", "turquoise4"),
+        main="",
+        xlab="",
+        ylab="Condutividade")
+
+#pH
+boxplot(dados$pH~fator$pontos,
+        ylim = c(6,8.5),
+        col = c("turquoise", "turquoise1",  "turquoise2", "turquoise3", "turquoise4"),
+        main="",
+        xlab="",
+        ylab="pH")
+
+#Phosphate
+boxplot(dados$fosfato~fator$pontos,
+        ylim = c(0,3),
+        col = c("turquoise", "turquoise1",  "turquoise2", "turquoise3", "turquoise4"),
+        main="",
+        xlab="",
+        ylab="fosfato")
+
+#silicate
+boxplot(dados$silicato~fator$pontos,
+        ylim = c(20,110),
+        col = c("turquoise", "turquoise1",  "turquoise2", "turquoise3", "turquoise4"),
+        main="",
+        xlab="",
+        ylab="silicato")
+
+
+#Nitrate
+boxplot(dados$nitrato~fator$pontos,
+        ylim = c(0,50),
+        col = c("turquoise", "turquoise1",  "turquoise2", "turquoise3", "turquoise4"),
+        main="",
+        xlab="",
+        ylab="nitrato")
+
+
+#Nitrite
+boxplot(dados$nitrito~fator$pontos,
+        ylim = c(0,4),
+        col = c("turquoise", "turquoise1",  "turquoise2", "turquoise3", "turquoise4"), 
+        main="",
+        xlab="",
+        ylab="nitrito")
+
+#Ammonium ion
+boxplot(dados$amonia~fator$pontos,
+        ylim = c(0,4),
+        col = c("turquoise", "turquoise1",  "turquoise2", "turquoise3", "turquoise4"),
+        main="",
+        xlab="",
+        ylab="amonia")
+
+#TP
+boxplot(dados$PT~fator$pontos,
+        ylim = c(5,90),
+        col = c("turquoise", "turquoise1",  "turquoise2", "turquoise3", "turquoise4"),
+        main="",
+        xlab="",
+        ylab="PT")
+
+#TN
+boxplot(dados$NT~fator$pontos,
+        ylim = c(3,190),
+        col = c("turquoise", "turquoise1",  "turquoise2", "turquoise3", "turquoise4"),
+        main="",
+        xlab="",
+        ylab="NT")
+
+
+#Chlorophyll-a
+boxplot(dados$CLOROFILA~fator$Pontos,
+        ylim = c(0,70),
+        col = c("turquoise", "turquoise1",  "turquoise2", "turquoise3", "turquoise4"),
+        main="",
+        xlab="",
+        ylab="clorofila a")
+
+#Density
+boxplot(dados$Densidade~fator$Pontos,
+        ylim = c(0,900000),
+        col = c("turquoise", "turquoise1",  "turquoise2", "turquoise3", "turquoise4"),
+        main="",
+        xlab="",
+        ylab="densidade")
+
+#Shannon
+boxplot(dados$Shannon~fator$Pontos,
+        ylim = c(),
+        col = c("turquoise", "turquoise1",  "turquoise2", "turquoise3", "turquoise4"),
+        main="",
+        xlab="",
+        ylab="shannon")
+
+#Evenness
+boxplot(dados$Equitabilidade~fator$Pontos,
+        ylim = c(),
+        col = c("turquoise", "turquoise1",  "turquoise2", "turquoise3", "turquoise4"),
+        main="",
+        xlab="",
+        ylab="evenness")
+
+#Richness
+boxplot(dados$Riqueza~fator$Pontos,
+        ylim = c(),
+        col = c("turquoise", "turquoise1",  "turquoise2", "turquoise3", "turquoise4"),
+        main="",
+        xlab="",
+        ylab="Richness")
+
+
+#DRY PERIOD 
+
+dados<- DRY
+View(dados)
+
+fator<- FATOREST
+View(fator)
+
+
+#Box de Pontos
+library(RColorBrewer)
+library(ggplot2)
+
+#Salinity
+
+boxplot(dados$SAL~fator$pontos,
+        ylim = c(0,20),
+        col = c("pink", "pink1", "pink2",  "pink3", "pink4"),
+        main="",
+        xlab="",
+        ylab="Salinity")
+
+#Temperature
+boxplot(dados$TEMP~fator$pontos,
+        ylim = c(27,32),
+        col = c("pink", "pink1", "pink2",  "pink3", "pink4"),
+        main="",
+        xlab="",
+        ylab="Temperature")
+
+#Dissolved oxygen
+boxplot(dados$OD~fator$pontos,
+        ylim = c(0,8),
+        col = c("pink", "pink1", "pink2",  "pink3", "pink4"),
+        main="",
+        xlab="",
+        ylab="Dissolved oxygen")
+
+#DO%
+boxplot(dados$SAT.OD~fator$pontos,
+        ylim = c(0,100),
+        col = c("pink", "pink1", "pink2",  "pink3", "pink4"),
+        main="",
+        xlab="",
+        ylab="OD%")
+
+
+#Water transparency
+boxplot(dados$SECCHI~fator$pontos,
+        ylim = c(10,100),
+        col = c("pink", "pink1", "pink2",  "pink3", "pink4"),
+        main="",
+        xlab="",
+        ylab="Transparência")
+
+
+#TDS
+boxplot(dados$TDS~fator$pontos,
+        ylim = c(0,20000),
+        col = c("pink", "pink1", "pink2",  "pink3", "pink4"),
+        main="",
+        xlab="",
+        ylab="TDS")
+
+#Electrical Conductivity
+boxplot(dados$Condutividade~fator$pontos,
+        ylim = c(),
+        col = c("pink", "pink1", "pink2",  "pink3", "pink4"),
+        main="",
+        xlab="",
+        ylab="Condutividade")
+
+#pH
+boxplot(dados$pH~fator$pontos,
+        ylim = c(6,8.5),
+        col = c("pink", "pink1", "pink2",  "pink3", "pink4"),
+        main="",
+        xlab="",
+        ylab="pH")
+
+#Phosphate
+boxplot(dados$fosfato~fator$pontos,
+        ylim = c(0,3),
+        col = c("pink", "pink1", "pink2",  "pink3", "pink4"),
+        main="",
+        xlab="",
+        ylab="fosfato")
+
+#silicate
+boxplot(dados$silicato~fator$pontos,
+        ylim = c(20,110),
+        col = c("pink", "pink1", "pink2",  "pink3", "pink4"),
+        main="",
+        xlab="",
+        ylab="silicato")
+
+
+#Nitrate
+boxplot(dados$nitrato~fator$pontos,
+        ylim = c(0,50),
+        col = c("pink", "pink1", "pink2",  "pink3", "pink4"),
+        main="",
+        xlab="",
+        ylab="nitrato")
+
+
+#Nitrite
+boxplot(dados$nitrito~fator$pontos,
+        ylim = c(0,4),
+        col = c("pink", "pink1", "pink2",  "pink3", "pink4"), 
+        main="",
+        xlab="",
+        ylab="nitrito")
+
+#Ammonium ion
+boxplot(dados$amonia~fator$pontos,
+        ylim = c(0,4),
+        col = c("pink", "pink1", "pink2",  "pink3", "pink4"),
+        main="",
+        xlab="",
+        ylab="amonia")
+
+#TP
+boxplot(dados$PT~fator$pontos,
+        ylim = c(5,90),
+        col = c("pink", "pink1", "pink2",  "pink3", "pink4"),
+        main="",
+        xlab="",
+        ylab="PT")
+
+#TN
+boxplot(dados$NT~fator$pontos,
+        ylim = c(3,190),
+        col = c("pink", "pink1", "pink2",  "pink3", "pink4"),
+        main="",
+        xlab="",
+        ylab="NT")
+
+
+#Chlorophyll-a
+boxplot(dados$CLOROFILA~fator$Pontos,
+        ylim = c(0,70),
+        col = c("pink", "pink1", "pink2",  "pink3", "pink4"),
+        main="",
+        xlab="",
+        ylab="clorofila a")
+
+#Density
+boxplot(dados$Densidade~fator$Pontos,
+        ylim = c(0,900000),
+        col = c("pink", "pink1", "pink2",  "pink3", "pink4"),
+        main="",
+        xlab="",
+        ylab="densidade")
+
+#Shannon
+boxplot(dados$Shannon~fator$Pontos,
+        ylim = c(),
+        col = c("pink", "pink1", "pink2",  "pink3", "pink4"),
+        main="",
+        xlab="",
+        ylab="shannon")
+
+#Evenness
+boxplot(dados$Equitabilidade~fator$Pontos,
+        ylim = c(),
+        col = c("pink", "pink1", "pink2",  "pink3", "pink4"),
+        main="",
+        xlab="",
+        ylab="evenness")
+
+#Richness
+boxplot(dados$Riqueza~fator$Pontos,
+        ylim = c(),
+        col = c("pink", "pink1", "pink2",  "pink3", "pink4"),
+        main="",
+        xlab="",
+        ylab="Richness")
+
+
