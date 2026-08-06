@@ -1,0 +1,41 @@
+# Cluster
+
+#Analise de agrupamento: Biologico geral
+
+#Instalando packages 
+
+install.packages('cluster')
+install.packages('purrr')
+install.packages('factoextra')
+
+#Carregando pacotes 
+
+library(cluster)
+library(purrr)
+library(factoextra)
+library(vegan)
+
+
+MP <-FITO 
+View(MP)
+
+#Transformar dados: Hellinger transforma??o 
+
+spe.h <- decostand(MP,"hellinger")
+View(spe.h)
+
+#Exportar dados em excel
+write.table(MP, "TableHellinger.csv")
+
+
+# Dissimilarity matrix
+d <- dist(MP, method = "euclidean")
+
+
+# Hierarchical clustering using M?todo Ward
+hc1 < hclust(MP, method = "ward.D")
+
+# Plot the obtained dendrogram
+plot(hc1, cex = 0.6, hang = -1)
+
+
