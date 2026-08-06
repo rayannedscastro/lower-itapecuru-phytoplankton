@@ -1,0 +1,184 @@
+
+
+library(tidyverse)
+library(readxl)
+library(ggplot2)
+
+#==============================
+# 1. IMPORTAR DADOS
+#==============================
+
+
+dados <- barra
+colnames(dados)[1] <- "Species"
+
+
+dados_long <- dados %>%
+  pivot_longer(
+    cols = c(Rainy, Dry),
+    names_to = "Season",
+    values_to = "Abundance"
+  ) %>%
+  filter(Abundance > 0)
+
+#==============================
+# 2. ABREVIAR NOMES DAS ESPÉCIES
+#==============================
+
+dados_long <- dados_long %>%
+  mutate(
+    Label = sub(
+      "^([A-Za-z])[A-Za-z]+\\s",
+      "\\1. ",
+      Species
+    )
+  )
+
+#==============================
+# 3. ESPAÇOS ENTRE GRUPOS
+#==============================
+
+empty_bar <- 4
+
+vazios <- data.frame(
+  Species = NA,
+  Label = NA,
+  Season = rep(unique(dados_long$Season),
+               each = empty_bar),
+  Abundance = NA
+)
+
+dados_plot <- bind_rows(dados_long, vazios)
+
+dados_plot <- dados_plot %>%
+  arrange(Season, desc(Abundance))
+
+dados_plot$id <- seq_len(nrow(dados_plot))
+
+#==============================
+# 4. RÓTULOS
+#==============================
+
+n <- nrow(dados_plot)
+
+label_data <- dados_plot %>%
+  filter(!is.na(Label)) %>%
+  mutate(
+    angle = 90 - 360*(id-0.5)/n,
+    hjust = ifelse(angle < -90,1,0),
+    angle = ifelse(angle < -90,
+                   angle+180,
+                   angle)
+  )
+
+#==============================
+# 5. LIMITES DOS GRUPOS
+#==============================
+
+base <- dados_plot %>%
+  group_by(Season) %>%
+  summarise(
+    start=min(id),
+    end=max(id)-empty_bar,
+    .groups="drop"
+  )
+
+base$title <- (base$start + base$end)/2
+
+#==============================
+# 6. LINHAS-GUIA
+#==============================
+
+grid <- label_data
+
+#==============================
+# 7. GRÁFICO
+#==============================
+
+ggplot(dados_plot,
+       aes(x=factor(id),
+           y=Abundance,
+           fill=Season)) +
+  
+  geom_col(
+    width=.95,
+    color="white",
+    linewidth=.25
+  ) +
+  
+  # linhas-guia
+  geom_segment(
+    data=grid,
+    aes(
+      x=id,
+      xend=id,
+      y=Abundance,
+      yend=Abundance+4
+    ),
+    inherit.aes=FALSE,
+    linewidth=.25
+  ) +
+  
+  # nomes das espécies
+  geom_text(
+    data=label_data,
+    aes(
+      x=id,
+      y=Abundance+6,
+      label=Label,
+      angle=angle,
+      hjust=hjust
+    ),
+    inherit.aes=FALSE,
+    size=3
+  ) +
+  
+  # títulos dos grupos
+  geom_text(
+    data=base,
+    aes(
+      x=title,
+      y=-12,
+      label=Season
+    ),
+    inherit.aes=FALSE,
+    fontface="bold",
+    size=5
+  ) +
+  
+  coord_polar() +
+  
+  ylim(-18,
+       max(dados_plot$Abundance,
+           na.rm=TRUE)+12) +
+  
+  scale_fill_manual(
+    values=c(
+      Rainy="#2C7FB8",
+      Dry="#D95F0E"
+    )
+  ) +
+  
+  labs(
+    fill="Season"
+  ) +
+  
+  theme_minimal(base_size=13) +
+  
+  theme(
+    axis.text=element_blank(),
+    axis.title=element_blank(),
+    panel.grid=element_blank(),
+    
+    legend.position="top",
+    
+    plot.margin=
+      margin(20,20,20,20),
+    
+    legend.title=
+      element_text(face="bold")
+  )
+
+
+
+
